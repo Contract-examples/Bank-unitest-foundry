@@ -39,22 +39,26 @@ contract BankTest is Test {
         // give user1 1 ETH
         vm.deal(user1, 1 ether);
 
+        // mock the user1
+        vm.startPrank(user1);
+
         // check the initial balance is 0
         assertEq(bank.balanceOf(user1), 0, "Initial balance should be 0");
 
         // amount = 0.5 ether
-        vm.prank(user1);
         bank.depositETH{ value: 0.5 ether }();
 
         // check the balance is updated
         assertEq(bank.balanceOf(user1), 0.5 ether, "Balance should be updated after deposit");
 
         // amount = 0.3 ether
-        vm.prank(user1);
         bank.depositETH{ value: 0.3 ether }();
 
         // check the balance is updated
         assertEq(bank.balanceOf(user1), 0.8 ether, "Balance should be accumulated after second deposit");
+
+        //  stop mock
+        vm.stopPrank();
     }
 
     function testDepositEmitsEvent() public {
