@@ -6,16 +6,11 @@ import "src/Bank.sol";
 
 contract BankTest is Test {
     Bank public bank;
-    address public admin;
     address public user1;
-    address public user2;
-    address public user3;
-
+    
     function setUp() public {
         bank = new Bank();
         user1 = address(0x1);
-        user2 = address(0x2);
-        user3 = address(0x3);
     }
 
     function testDepositZeroAmount() public {
