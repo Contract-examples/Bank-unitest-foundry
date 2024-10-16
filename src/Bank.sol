@@ -4,7 +4,7 @@ pragma solidity ^0.8.28;
 import "@openzeppelin/contracts/utils/Address.sol";
 
 contract Bank {
-    // error
+    // custom error
     error DepositAmountMustBeGreaterThanOne();
 
     mapping(address => uint256) public balanceOf;
