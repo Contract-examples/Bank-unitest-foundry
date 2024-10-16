@@ -13,51 +13,41 @@ contract BankTest is Test {
 
     function setUp() public {
         bank = new Bank();
-        admin = bank.admin();
         user1 = address(0x1);
         user2 = address(0x2);
         user3 = address(0x3);
     }
 
-    function testDeposit() public {
+    function testDepositZeroAmount() public {
         vm.deal(user1, 1 ether);
         vm.prank(user1);
-        bank.deposit{ value: 0.5 ether }();
-        assertEq(bank.balances(user1), 0.5 ether);
+
+        // make sure the deposit will revert when the amount is 0
+        vm.expectRevert("Deposit amount must be greater than 0");
+
+        // try to deposit 0 ether, this should fail
+        bank.depositETH{ value: 0 ether }();
     }
 
-    function testTopDepositors() public {
+    function testDepositUpdateBalance() public {
+        // give user1 1 ETH
         vm.deal(user1, 1 ether);
-        vm.deal(user2, 2 ether);
-        vm.deal(user3, 3 ether);
 
+        // check the initial balance is 0
+        assertEq(bank.balanceOf(user1), 0, "Initial balance should be 0");
+
+        // amount = 0.5 ether 
         vm.prank(user1);
-        bank.deposit{ value: 0.5 ether }();
-        vm.prank(user2);
-        bank.deposit{ value: 1 ether }();
-        vm.prank(user3);
-        bank.deposit{ value: 1.5 ether }();
+        bank.depositETH{ value: 0.5 ether }();
 
-        address[3] memory topDepositors = bank.getTopDepositors();
-        assertEq(topDepositors[0], user3);
-        assertEq(topDepositors[1], user2);
-        assertEq(topDepositors[2], user1);
-    }
+        // check the balance is updated 
+        assertEq(bank.balanceOf(user1), 0.5 ether, "Balance should be updated after deposit");
 
-    // function testWithdraw() public {
-    //     address bankAdmin = bank.admin();
-    //     vm.deal(address(bank), 1 ether);
-    //     uint256 initialBalance = bankAdmin.balance;
-
-    //     vm.prank(bankAdmin);
-    //     bank.withdraw(0.5 ether);
-
-    //     assertEq(bankAdmin.balance, initialBalance + 0.5 ether);
-    // }
-
-    function testFailWithdrawNotAdmin() public {
-        vm.deal(address(bank), 1 ether);
+        // amount = 0.3 ether   
         vm.prank(user1);
-        bank.withdraw(0.5 ether);
+        bank.depositETH{ value: 0.3 ether }();
+
+        // check the balance is updated
+        assertEq(bank.balanceOf(user1), 0.8 ether, "Balance should be accumulated after second deposit");
     }
 }
