@@ -7,7 +7,7 @@ import "src/Bank.sol";
 contract BankTest is Test {
     Bank public bank;
     address public user1;
-    
+
     function setUp() public {
         bank = new Bank();
         user1 = address(0x1);
@@ -22,6 +22,17 @@ contract BankTest is Test {
 
         // try to deposit 0 ether, this should fail
         bank.depositETH{ value: 0 ether }();
+    }
+
+    function testDepositCustomError() public {
+        vm.deal(user1, 2 ether);
+        vm.prank(user1);
+
+        // test for custom error
+        vm.expectRevert(Bank.DepositAmountMustBeGreaterThanOne.selector);
+
+        // try to deposit 1 ether, this should fail
+        bank.depositETH2{ value: 1 ether }();
     }
 
     function testDepositUpdateBalance() public {
