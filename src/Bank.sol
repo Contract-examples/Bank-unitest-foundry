@@ -19,7 +19,7 @@ contract Bank {
 
     // test for custom error
     function depositETH2() external payable {
-        if (msg.value <= 1) {
+        if (msg.value <= 1 ether) {
             revert DepositAmountMustBeGreaterThanOne();
         }
         balanceOf[msg.sender] += msg.value;
