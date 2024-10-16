@@ -1,3 +1,2 @@
-BankTest:testDeposit() (gas: 71334)
-BankTest:testFailWithdrawNotAdmin() (gas: 10553)
-BankTest:testTopDepositors() (gas: 183141)
+BankTest:testDepositUpdateBalance() (gas: 55854)
+BankTest:testDepositZeroAmount() (gas: 11262)
