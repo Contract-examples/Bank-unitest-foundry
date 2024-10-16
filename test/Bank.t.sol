@@ -29,7 +29,7 @@ contract BankTest is Test {
         vm.prank(user1);
 
         // test for custom error
-        vm.expectRevert(Bank.DepositAmountMustBeGreaterThanOne.selector);
+        vm.expectRevert(Bank.DepositAmountMustBeGreaterThanOneEther.selector);
 
         // try to deposit 1 ether, this should fail
         bank.depositETH2{ value: 1 ether }();

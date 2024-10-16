@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/utils/Address.sol";
 
 contract Bank {
     // custom error
-    error DepositAmountMustBeGreaterThanOne();
+    error DepositAmountMustBeGreaterThanOneEther();
 
     mapping(address => uint256) public balanceOf;
 
@@ -20,7 +20,7 @@ contract Bank {
     // test for custom error
     function depositETH2() external payable {
         if (msg.value <= 1 ether) {
-            revert DepositAmountMustBeGreaterThanOne();
+            revert DepositAmountMustBeGreaterThanOneEther();
         }
         balanceOf[msg.sender] += msg.value;
         emit Deposit(msg.sender, msg.value);
